@@ -31,7 +31,7 @@ class SeatActivity : AppCompatActivity() {
                 if (data != null) {
                     val barcode = data.getParcelableExtra<Barcode>(BarcodeCaptureActivity.BarcodeObject)
                     val p = barcode.cornerPoints
-                    if (barcode.displayValue.equals("1") or barcode.displayValue.equals("2") or barcode.displayValue.equals("1")) {
+                    if (barcode.displayValue.equals("1") or barcode.displayValue.equals("2") or barcode.displayValue.equals("3")) {
                         Toast.makeText(this, "Order Confirmed!", Toast.LENGTH_LONG).show()
                         mResultTextView.text = "Seat number: " + barcode.displayValue + "\n\n I won't be long now...please feel free to order again at any time!"
                         /** display string of the result: mResultTextView.text = barcode.displayValue */
