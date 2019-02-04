@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -76,9 +77,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat);
+        TextView result_textview = (TextView)findViewById(R.id.result_textview);
 
         String url = "http://192.168.105.142/APP";
         String seatnumber = getIntent().getStringExtra("Seat");
+        result_textview.setText("Seat number: " + seatnumber + "\n\n I won't be long now...please feel free to order again at any time!");
+
         Log.d(TAG,"the seat number is: "+ seatnumber);
         try {
             post(url,seatnumber);
@@ -86,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e(TAG, "POST DIDNT HAPPEN");}
 
 
-
+        finish();
 //        test.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

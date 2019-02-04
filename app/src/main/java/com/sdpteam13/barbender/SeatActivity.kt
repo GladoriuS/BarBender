@@ -31,12 +31,15 @@ class SeatActivity : AppCompatActivity() {
                 if (data != null) {
                     val barcode = data.getParcelableExtra<Barcode>(BarcodeCaptureActivity.BarcodeObject)
                     val p = barcode.cornerPoints
-                    Toast.makeText(this, "Order Confirmed!", Toast.LENGTH_LONG).show()
-                    mResultTextView.text = "Seat number: " + barcode.displayValue + "\n\n I won't be long now...please feel free to order again at any time!"
-                    /** display string of the result: mResultTextView.text = barcode.displayValue */
-                    val intent2 = Intent(applicationContext,MainActivity::class.java)
-                    intent2.putExtra("Seat", barcode.displayValue)
-                    startActivity(intent2)
+                    if (barcode.displayValue.equals("1") or barcode.displayValue.equals("2") or barcode.displayValue.equals("1")) {
+                        Toast.makeText(this, "Order Confirmed!", Toast.LENGTH_LONG).show()
+                        mResultTextView.text = "Seat number: " + barcode.displayValue + "\n\n I won't be long now...please feel free to order again at any time!"
+                        /** display string of the result: mResultTextView.text = barcode.displayValue */
+                        val intent2 = Intent(applicationContext, MainActivity::class.java)
+                        intent2.putExtra("Seat", barcode.displayValue)
+                        startActivity(intent2)
+                    }else
+                        mResultTextView.setText("Not a valid QR code, please scan the code on your seat")
 
                 } else
                     mResultTextView.setText("No barcode captured")
