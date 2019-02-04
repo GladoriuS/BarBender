@@ -34,7 +34,9 @@ class SeatActivity : AppCompatActivity() {
                     Toast.makeText(this, "Order Confirmed!", Toast.LENGTH_LONG).show()
                     mResultTextView.text = "Seat number: " + barcode.displayValue + "\n\n I won't be long now...please feel free to order again at any time!"
                     /** display string of the result: mResultTextView.text = barcode.displayValue */
-                    MainActivity.post("http://192.168.105.142/APP",barcode.displayValue)
+                    val intent2 = Intent(applicationContext,MainActivity::class.java)
+                    intent2.putExtra("Seat", barcode.displayValue)
+                    startActivity(intent2)
 
                 } else
                     mResultTextView.setText("No barcode captured")

@@ -1,5 +1,6 @@
 package com.sdpteam13.barbender;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-   static String post(String url, String command) throws IOException {
+   String post(String url, String command) throws IOException {
         final String[] responseResult = {""};
         OkHttpClient client = new OkHttpClient();
 
@@ -70,18 +71,25 @@ public class MainActivity extends AppCompatActivity {
         return responseResult[0];
     }
 
-    Button test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        test = findViewById(R.id.buttonGo);
+        setContentView(R.layout.activity_seat);
+
+        String url = "http://192.168.105.142/APP";
+        String seatnumber = getIntent().getStringExtra("Seat");
+        Log.d(TAG,"the seat number is: "+ seatnumber);
+        try {
+            post(url,seatnumber);
+        }catch (IOException e){e.printStackTrace();
+        Log.e(TAG, "POST DIDNT HAPPEN");}
 
 
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+//        test.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 
                 // Connection with sockets
 //                wifiModuleIp = "192.168.105.142";
@@ -96,13 +104,13 @@ public class MainActivity extends AppCompatActivity {
                 cmd_go.execute(url,"Go");*/
 
                 // Connection with okhttp3
-                String url = "http://192.168.105.142/APP";
-                String command = "w";
-                try {
-                    post(url,command);
-                }catch (IOException e){e.printStackTrace();}
-            }
-        });
+               // String url = "http://192.168.105.142/APP";
+             //   String command = "w";
+           //     try {
+         //           post(url,command);
+       //         }catch (IOException e){e.printStackTrace();}
+     //       }
+//        });
 
     }
 
