@@ -42,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    String post(String url, String command) throws IOException {
+   static String post(String url, String command) throws IOException {
         final String[] responseResult = {""};
         OkHttpClient client = new OkHttpClient();
 
         RequestBody body = new FormBody.Builder()
-                .add("command",command)
+                .add("seat",command)
                 .build();
         Request request = new Request.Builder()
                 .url(url)

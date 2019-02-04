@@ -33,8 +33,9 @@ class SeatActivity : AppCompatActivity() {
                     val p = barcode.cornerPoints
                     Toast.makeText(this, "Order Confirmed!", Toast.LENGTH_LONG).show()
                     mResultTextView.text = "Seat number: " + barcode.displayValue + "\n\n I won't be long now...please feel free to order again at any time!"
-
                     /** display string of the result: mResultTextView.text = barcode.displayValue */
+                    MainActivity.post("http://192.168.105.142/APP",barcode.displayValue)
+
                 } else
                     mResultTextView.setText("No barcode captured")
             } else
