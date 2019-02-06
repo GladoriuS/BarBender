@@ -25,6 +25,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -48,12 +49,20 @@ public class MainActivity extends AppCompatActivity {
         final String[] responseResult = {""};
         OkHttpClient client = new OkHttpClient();
 
+        // new methode to post with okhttp
+        RequestBody requestBody = new MultipartBody.Builder()
+               .setType(MultipartBody.FORM)
+               .addFormDataPart("seat", command)
+               .build();
+
+        // Internet said it is outdated
         RequestBody body = new FormBody.Builder()
                 .add("seat",command)
                 .build();
-        Request request = new Request.Builder()
+
+        final Request request = new Request.Builder()
                 .url(url)
-                .post(body)
+                .post(requestBody)
                 .build();
         Call call = client.newCall(request);
 
@@ -79,13 +88,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_seat);
         TextView result_textview = (TextView)findViewById(R.id.result_textview);
 
-        String url = "http://192.168.105.142/APP";
+        String url = "http://192.168.105.142/APP/";
         String seatnumber = getIntent().getStringExtra("Seat");
         result_textview.setText("Seat number: " + seatnumber + "\n\n I won't be long now...please feel free to order again at any time!");
 
         Log.d(TAG,"the seat number is: "+ seatnumber);
         try {
-            post(url,seatnumber);
+            String back = post(url,seatnumber);
+            Log.d(TAG,"Post was succesful: "+ seatnumber);
+            Log.d(TAG, "Post return: " + back);
         }catch (IOException e){e.printStackTrace();
         Log.e(TAG, "POST DIDNT HAPPEN");}
 
