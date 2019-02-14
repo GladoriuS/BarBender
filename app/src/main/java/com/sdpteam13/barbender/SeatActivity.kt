@@ -35,9 +35,10 @@ class SeatActivity : AppCompatActivity() {
                         Toast.makeText(this, "Order Confirmed!", Toast.LENGTH_LONG).show()
                         mResultTextView.text = "Seat number: " + barcode.displayValue + "\n\n I won't be long now...please feel free to order again at any time!"
                         /** display string of the result: mResultTextView.text = barcode.displayValue */
-                        val intent2 = Intent(applicationContext, MainActivity::class.java)
-                        intent2.putExtra("Seat", barcode.displayValue)
-                        startActivity(intent2)
+                        BackEndNStuff.post("http://192.168.105.142/APP/",barcode.displayValue,"Hello")
+                        //val intent2 = Intent(applicationContext, BackEndNStuff::class.java)
+                        //intent2.putExtra("Seat", barcode.displayValue)
+                        //startActivity(intent2)
                     }else
                         mResultTextView.setText("Not a valid QR code, please scan the code on your seat")
 
@@ -51,7 +52,7 @@ class SeatActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val LOG_TAG = MainActivity::class.java.simpleName
+        private val LOG_TAG = BackEndNStuff::class.java.simpleName
         private val BARCODE_READER_REQUEST_CODE = 1
     }
 }

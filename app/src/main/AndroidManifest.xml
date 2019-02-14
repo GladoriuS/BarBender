@@ -22,7 +22,7 @@
         </activity>
 
         <activity android:name=".barcode.BarcodeCaptureActivity"/>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".BackEndNStuff" />
         <activity android:name=".BarlistActivity" />
         <activity android:name=".SeatActivity"></activity>
     </application>

@@ -1,12 +1,9 @@
 package com.sdpteam13.barbender;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.BufferedOutputStream;
@@ -23,7 +20,6 @@ import java.net.UnknownHostException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -31,34 +27,30 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class BackEndNStuff extends AppCompatActivity {
 
-    public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String TAG = BackEndNStuff.class.getSimpleName();
 
     public static  String wifiModuleIp="192.168.105.142";
     public static int wifiModulePort = 53421;
     public static String CMD = "0";
-    Socket myAppSocket = null;
+    //Socket myAppSocket = null;
 
-    public static final MediaType JSON
-            = MediaType.get("application/json; charset=utf-8");
-
-
-
-   String post(String url, String command) throws IOException {
+   static String post(String url, String seat,String test) throws IOException {
         final String[] responseResult = {""};
         OkHttpClient client = new OkHttpClient();
 
         // new methode to post with okhttp
         RequestBody requestBody = new MultipartBody.Builder()
                .setType(MultipartBody.FORM)
-               .addFormDataPart("seat", command)
+               .addFormDataPart("seat", seat)
+                .addFormDataPart("test", test)
                .build();
 
         // Internet said it is outdated
-        RequestBody body = new FormBody.Builder()
-                .add("seat",command)
-                .build();
+        //RequestBody body = new FormBody.Builder()
+        //        .add("seat",command)
+        //        .build();
 
         final Request request = new Request.Builder()
                 .url(url)
@@ -82,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat);
@@ -90,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         String url = "http://192.168.105.142/APP/";
         String seatnumber = getIntent().getStringExtra("Seat");
-        result_textview.setText("Seat number: " + seatnumber + "\n\n I won't be long now...please feel free to order again at any time!");
+        //result_textview.setText("Seat number: " + seatnumber + "\n\n I won't be long now...please feel free to order again at any time!");
 
         Log.d(TAG,"the seat number is: "+ seatnumber);
         try {
@@ -102,32 +94,32 @@ public class MainActivity extends AppCompatActivity {
 
 
         finish();
-//        test.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                // Connection with sockets
-//                wifiModuleIp = "192.168.105.142";
-//                wifiModulePort = 53421;
-//                CMD = "Go";
-//                Socket_AsyncTask cmd_go = new Socket_AsyncTask();
-//                cmd_go.execute();
+                 Connection with sockets
+                wifiModuleIp = "192.168.105.142";
+                wifiModulePort = 53421;
+                CMD = "Go";
+                Socket_AsyncTask cmd_go = new Socket_AsyncTask();
+                cmd_go.execute();
 
-                // Connection with flask
-                /*String url = "http://192.168.105.142/APP";
+                 Connection with flask
+                String url = "http://192.168.105.142/APP";
                 CallAPI cmd_go = new CallAPI();
-                cmd_go.execute(url,"Go");*/
+                cmd_go.execute(url,"Go");
 
-                // Connection with okhttp3
-               // String url = "http://192.168.105.142/APP";
-             //   String command = "w";
-           //     try {
-         //           post(url,command);
-       //         }catch (IOException e){e.printStackTrace();}
-     //       }
-//        });
+                 Connection with okhttp3
+                String url = "http://192.168.105.142/APP";
+                String command = "w";
+                try {
+                    post(url,command);
+                }catch (IOException e){e.printStackTrace();}
+            }
+        });
 
-    }
+    }*/
 
     //Connection with socket
     //Helper class for TCP-IP protocol interface
@@ -140,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             try
             {
-                InetAddress inetAddress = InetAddress.getByName(MainActivity.wifiModuleIp);
-                socket = new java.net.Socket(inetAddress,MainActivity.wifiModulePort);
+                InetAddress inetAddress = InetAddress.getByName(BackEndNStuff.wifiModuleIp);
+                socket = new java.net.Socket(inetAddress, BackEndNStuff.wifiModulePort);
                 DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                 dataOutputStream.writeBytes(CMD);
                 dataOutputStream.close();
