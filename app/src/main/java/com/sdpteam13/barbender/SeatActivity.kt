@@ -12,6 +12,7 @@ import com.sdpteam13.barbender.barcode.BarcodeCaptureActivity
 class SeatActivity : AppCompatActivity() {
 
     private lateinit var mResultTextView: TextView
+    private lateinit var order : ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +21,7 @@ class SeatActivity : AppCompatActivity() {
         mResultTextView = findViewById(R.id.result_textview)
 
         //get the order array from previous activity
-        val order = intent.getStringArrayListExtra("order")
+        order = intent.getStringArrayListExtra("order")
 
         findViewById<ImageView>(R.id.scan_barcode_button).setOnClickListener {
             val intent = Intent(applicationContext, BarcodeCaptureActivity::class.java)
@@ -35,10 +36,13 @@ class SeatActivity : AppCompatActivity() {
                     val barcode = data.getParcelableExtra<Barcode>(BarcodeCaptureActivity.BarcodeObject)
                     val p = barcode.cornerPoints
                     if (barcode.displayValue.equals("1") or barcode.displayValue.equals("2") or barcode.displayValue.equals("3")) {
+                        for(i in order.indices)
+                        {
+                            BackEndNStuff.post("http://192.168.105.142/APP/",barcode.displayValue,order[i])
+                        }
                         Toast.makeText(this, "Seat Confirmed!", Toast.LENGTH_SHORT).show()
                         mResultTextView.text = "Seat number: " + barcode.displayValue + "\n\n I won't be long now...please feel free to order again at any time!"
                         /** display string of the result: mResultTextView.text = barcode.displayValue */
-                        BackEndNStuff.post("http://192.168.105.142/APP/",barcode.displayValue,"Hello")
 
                         /*The drinks to be ordered are stored in the array "order"
                         Each drink is stored in an index, eg order[0] is the first drink

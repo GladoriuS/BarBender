@@ -36,7 +36,7 @@ public class BackEndNStuff extends AppCompatActivity {
     public static String CMD = "0";
     //Socket myAppSocket = null;
 
-   static String post(String url, String seat,String test) throws IOException {
+   static String post(String url, String seat,String drink) throws IOException {
         final String[] responseResult = {""};
         OkHttpClient client = new OkHttpClient();
 
@@ -44,7 +44,7 @@ public class BackEndNStuff extends AppCompatActivity {
         RequestBody requestBody = new MultipartBody.Builder()
                .setType(MultipartBody.FORM)
                .addFormDataPart("seat", seat)
-                .addFormDataPart("test", test)
+                .addFormDataPart("drink", drink)
                .build();
 
         // Internet said it is outdated

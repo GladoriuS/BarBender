@@ -181,6 +181,8 @@
         android:layout_marginTop="8dp"
         android:text="Tap to view/confirm order"
         android:textSize="20dp"
+        android:onClick="onClick"
+        android:clickable="true"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

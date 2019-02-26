@@ -62,6 +62,6 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onBackPressed()
     {
-        startActivity(new Intent(this, BrowseActivity.class));
+        startActivity(new Intent(this, SelectorActivity.class));
     }
 }
