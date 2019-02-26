@@ -41,7 +41,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         ArrayList<String> order = getIntent().getStringArrayListExtra("order");
         switch (v.getId()){
             case R.id.cancel:
-                startActivity(new Intent(this, BrowseActivity.class));
+                startActivity(new Intent(this, SelectorActivity.class));
                 break;
 
             case R.id.confirm:
