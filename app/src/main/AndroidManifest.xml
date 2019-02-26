@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -20,11 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".barcode.BarcodeCaptureActivity"/>
+        <activity android:name=".barcode.BarcodeCaptureActivity" />
         <activity android:name=".BackEndNStuff" />
         <activity android:name=".BarlistActivity" />
-        <activity android:name=".SeatActivity"></activity>
+        <activity android:name=".SeatActivity" />
+        <activity android:name=".SelectorActivity" />
+        <activity android:name=".BrowseActivity" />
+        <activity android:name=".CustomiseActivity" />
+        <activity android:name=".OrderActivity"></activity>
     </application>
 
 </manifest>

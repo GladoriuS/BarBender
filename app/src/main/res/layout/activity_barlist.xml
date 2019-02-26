@@ -36,7 +36,7 @@
             <ImageView
                 android:id="@+id/edi"
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
+                android:layout_height="wrap_content"
                 android:scaleType="fitXY"
                 android:adjustViewBounds="true"
                 app:srcCompat="@drawable/edi" />
@@ -44,23 +44,15 @@
             <ImageView
                 android:id="@+id/appleton"
                 android:layout_width="match_parent"
-                android:layout_height="115dp"
+                android:layout_height="145dp"
                 android:scaleType="fitXY"
                 android:adjustViewBounds="true"
                 app:srcCompat="@drawable/appleton" />
 
             <ImageView
-                android:id="@+id/peartree"
-                android:layout_width="match_parent"
-                android:layout_height="115dp"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/peartree" />
-
-            <ImageView
                 android:id="@+id/forum"
                 android:layout_width="match_parent"
-                android:layout_height="115dp"
+                android:layout_height="145dp"
                 android:scaleType="fitXY"
                 android:adjustViewBounds="true"
                 app:srcCompat="@drawable/forum" />

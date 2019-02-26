@@ -19,6 +19,9 @@ class SeatActivity : AppCompatActivity() {
 
         mResultTextView = findViewById(R.id.result_textview)
 
+        //get the order array from previous activity
+        val order = intent.getStringArrayListExtra("order")
+
         findViewById<ImageView>(R.id.scan_barcode_button).setOnClickListener {
             val intent = Intent(applicationContext, BarcodeCaptureActivity::class.java)
             startActivityForResult(intent, BARCODE_READER_REQUEST_CODE)
@@ -32,10 +35,17 @@ class SeatActivity : AppCompatActivity() {
                     val barcode = data.getParcelableExtra<Barcode>(BarcodeCaptureActivity.BarcodeObject)
                     val p = barcode.cornerPoints
                     if (barcode.displayValue.equals("1") or barcode.displayValue.equals("2") or barcode.displayValue.equals("3")) {
-                        Toast.makeText(this, "Order Confirmed!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Seat Confirmed!", Toast.LENGTH_SHORT).show()
                         mResultTextView.text = "Seat number: " + barcode.displayValue + "\n\n I won't be long now...please feel free to order again at any time!"
                         /** display string of the result: mResultTextView.text = barcode.displayValue */
                         BackEndNStuff.post("http://192.168.105.142/APP/",barcode.displayValue,"Hello")
+
+                        /*The drinks to be ordered are stored in the array "order"
+                        Each drink is stored in an index, eg order[0] is the first drink
+                        order[1] is the second drink to be ordered etc.
+                         */
+
+
                         //val intent2 = Intent(applicationContext, BackEndNStuff::class.java)
                         //intent2.putExtra("Seat", barcode.displayValue)
                         //startActivity(intent2)
