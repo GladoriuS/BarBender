@@ -27,7 +27,9 @@
         <activity android:name=".SelectorActivity" />
         <activity android:name=".BrowseActivity" />
         <activity android:name=".CustomiseActivity" />
-        <activity android:name=".OrderActivity"></activity>
+        <activity android:name=".OrderActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".barcode.RegisterActivity"></activity>
     </application>
 
 </manifest>

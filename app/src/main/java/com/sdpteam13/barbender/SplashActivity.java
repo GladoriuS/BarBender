@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
 
             public void onFinish() {
                 finish(); // finish the activity
-                startActivity(new Intent(SplashActivity.this, BarlistActivity.class));
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             }
         }.start();
     }
