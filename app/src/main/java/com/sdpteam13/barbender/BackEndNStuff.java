@@ -73,6 +73,119 @@ public class BackEndNStuff extends AppCompatActivity {
         return responseResult[0];
     }
 
+    static String getSalt(String url, String username) throws IOException {
+        final String[] responseResult = new String[1];
+        responseResult[0] = "asd";
+        //final String asd = "";
+        OkHttpClient client = new OkHttpClient();
+
+        // new methode to post with okhttp
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("username", username)
+                .build();
+
+        final Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            //volatile String asd = "";
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG,"Could not connect to url");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG,"Success");
+                responseResult[0] = response.body().string();
+                Log.d(TAG, "The salt from the server is: "+response.body().string());
+                //asd = response.body().string();
+            }
+        });
+        Log.d(TAG, "The salt from the function is: "+responseResult[0]);
+        return responseResult[0];
+    }
+
+    static String logIn(String url, String password) throws IOException {
+        final String[] responseResult = new String[1];
+        responseResult[0] = "asd";
+        //final String asd = "";
+        OkHttpClient client = new OkHttpClient();
+
+        // new methode to post with okhttp
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("password", password)
+                .build();
+
+        final Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            //volatile String asd = "";
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG,"Could not connect to url");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG,"Connected to URL");
+                responseResult[0] = response.body().string();
+                Log.d(TAG, "The log-in result from the server is: "+response.body().string());
+                //asd = response.body().string();
+            }
+        });
+        Log.d(TAG, "The log-in result from the function is: "+responseResult[0]);
+        return responseResult[0];
+    }
+
+    static String register(String url,String username, String password,String salt) throws IOException {
+        final String[] responseResult = new String[1];
+        responseResult[0] = "asd";
+        //final String asd = "";
+        OkHttpClient client = new OkHttpClient();
+
+        // new methode to post with okhttp
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("username", username)
+                .addFormDataPart("password", password)
+                .addFormDataPart("salt", salt)
+                .build();
+
+        final Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            //volatile String asd = "";
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG,"Could not connect to url");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG,"Connected to URL");
+                responseResult[0] = response.body().string();
+                Log.d(TAG, "The log-in result from the server is: "+response.body().string());
+                //asd = response.body().string();
+            }
+        });
+        Log.d(TAG, "The log-in result from the function is: "+responseResult[0]);
+        return responseResult[0];
+    }
+
 
     /*@Override
     protected void onCreate(Bundle savedInstanceState) {

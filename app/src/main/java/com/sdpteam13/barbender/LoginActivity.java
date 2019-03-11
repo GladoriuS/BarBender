@@ -4,18 +4,56 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.sdpteam13.barbender.barcode.RegisterActivity;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
+    public static final String TAG = LoginActivity.class.getSimpleName();
     EditText email, password;
     ProgressBar progressBar;
+
+
+    //Add salt
+    private static byte[] getSalt() throws NoSuchAlgorithmException
+    {
+        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+        byte[] salt = new byte[16];
+        sr.nextBytes(salt);
+        return salt;
+    }
+
+
+    public String getSHA(String password,byte[] salt)
+    {
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(salt);
+            byte[] bytes = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< bytes.length ;i++)
+            {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+        return generatedPassword;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +99,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressBar.setVisibility(View.VISIBLE);
 
         //DANI - sign user in here if credentials work and send them to BarlistActivity
+        byte[] salt;
+        String encryptedPassword = "";
+        String state = "";
+        try {
+            salt = BackEndNStuff.getSalt("http://192.168.105.142/APP/",userEmail).getBytes();
+            Log.d(TAG,"The salt is: " + salt);
+
+            encryptedPassword = getSHA(userPassword,salt);
+            state = BackEndNStuff.logIn("http://192.168.105.142/APP/", encryptedPassword);
+
+            if(state.equals("Success"))
+            {
+                startActivity(new Intent(this, BarlistActivity.class));
+            }
+            else
+            {
+                Toast.makeText(this,"Log-in failed",Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }catch(IOException e)
+        {
+            e.printStackTrace();
+        }
 
         //progress bar ends after successful sign in
         progressBar.setVisibility(View.GONE);
