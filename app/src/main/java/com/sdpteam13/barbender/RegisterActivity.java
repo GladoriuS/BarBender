@@ -1,7 +1,9 @@
 package com.sdpteam13.barbender;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -26,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         sr.nextBytes(salt);
         return salt;
     }
+
 
 
     public String getSHA(String password,byte[] salt)
@@ -101,8 +106,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
         //password restrictions for a minimumly secure password
-        if (userpassword.length() < 6) {
-            password.setError("Minimum length of new password is 6 characters");
+        if (userpassword.length() < 10) {
+            password.setError("Minimum length of new password is 10 characters");
             password.requestFocus();
             return;
         }
@@ -117,8 +122,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         try {
             salt = getSalt();
             encryptedPassword = getSHA(userpassword,salt);
-            state = BackEndNStuff.register("http://192.168.105.142/APP/",username,encryptedPassword,salt.toString());
+            Log.d(TAG,"The reg enrypted password is: " + encryptedPassword);
+            Log.d(TAG,"The reg salt is: " + Base64.encodeToString(salt,0));
+            state = BackEndNStuff.register("http://192.168.105.142/APP/REGISTER/",username,encryptedPassword,Base64.encodeToString(salt,0));
             Log.d(TAG,"The current state is: " + state);
+
+            startActivity(new Intent(this,LoginActivity.class));
 
 
         }catch (NoSuchAlgorithmException e)

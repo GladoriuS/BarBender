@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -22,16 +23,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String TAG = LoginActivity.class.getSimpleName();
     EditText email, password;
     ProgressBar progressBar;
-
-
-    //Add salt
-    private static byte[] getSalt() throws NoSuchAlgorithmException
-    {
-        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-        byte[] salt = new byte[16];
-        sr.nextBytes(salt);
-        return salt;
-    }
 
 
     public String getSHA(String password,byte[] salt)
@@ -90,8 +81,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
         //password restrictions for a minimumly secure password
-        if (userPassword.length() < 6) {
-            password.setError("Minimum length of password is 6 characters");
+        if (userPassword.length() < 10) {
+            password.setError("Minimum length of password is 10 characters");
             password.requestFocus();
             return;
         }
@@ -102,21 +93,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         byte[] salt;
         String encryptedPassword = "";
         String state = "";
+
         try {
-            salt = BackEndNStuff.getSalt("http://192.168.105.142/APP/",userEmail).getBytes();
+            salt = Base64.decode(BackEndNStuff.getSalt("http://192.168.105.142/APP/LOGIN/",userEmail),0);
             Log.d(TAG,"The salt is: " + salt);
 
             encryptedPassword = getSHA(userPassword,salt);
-            state = BackEndNStuff.logIn("http://192.168.105.142/APP/", encryptedPassword);
+            Log.d(TAG,"the hashed password is:" +encryptedPassword);
 
-            if(state.equals("Success"))
-            {
-                startActivity(new Intent(this, BarlistActivity.class));
-            }
-            else
+            state = BackEndNStuff.logIn("http://192.168.105.142/APP/LOGIN/", userEmail,encryptedPassword);
+            Log.d(TAG,"the state is:" +state);
+
+            if(state.equals("invalid credentials"))
             {
                 Toast.makeText(this,"Log-in failed",Toast.LENGTH_SHORT).show();
                 return;
+            }
+            else
+            {
+                Log.d(TAG,"successful login");
+                startActivity(new Intent(this, BarlistActivity.class));
             }
         }catch(IOException e)
         {
@@ -136,6 +132,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.register:
+                //startActivity(new Intent(this, RegisterActivity.class));
                 startActivity(new Intent(this, RegisterActivity.class));
                 break;
         }

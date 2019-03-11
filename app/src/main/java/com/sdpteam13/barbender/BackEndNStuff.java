@@ -17,6 +17,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -35,6 +40,8 @@ public class BackEndNStuff extends AppCompatActivity {
     public static int wifiModulePort = 53421;
     public static String CMD = "0";
     //Socket myAppSocket = null;
+
+    public static ExecutorService executor = Executors.newSingleThreadExecutor();
 
    static String post(String url, String seat,String drink) throws IOException {
         final String[] responseResult = {""};
@@ -77,7 +84,7 @@ public class BackEndNStuff extends AppCompatActivity {
         final String[] responseResult = new String[1];
         responseResult[0] = "asd";
         //final String asd = "";
-        OkHttpClient client = new OkHttpClient();
+        final OkHttpClient client = new OkHttpClient();
 
         // new methode to post with okhttp
         RequestBody requestBody = new MultipartBody.Builder()
@@ -89,36 +96,44 @@ public class BackEndNStuff extends AppCompatActivity {
                 .url(url)
                 .post(requestBody)
                 .build();
-        Call call = client.newCall(request);
-
-        call.enqueue(new Callback() {
-            //volatile String asd = "";
+        Callable<String> callable = new Callable<String>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e(TAG,"Could not connect to url");
-            }
+            public String call() {
+                try {
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG,"Success");
-                responseResult[0] = response.body().string();
-                Log.d(TAG, "The salt from the server is: "+response.body().string());
-                //asd = response.body().string();
+                    Response response = client.newCall(request).execute();
+                    return response.body().string();
+
+                }catch (IOException e)
+                {
+                    Log.e(TAG,"register failed");
+                    return "asd";
+                }
             }
-        });
-        Log.d(TAG, "The salt from the function is: "+responseResult[0]);
-        return responseResult[0];
+        };
+
+        try {
+
+            Future<String> future = executor.submit(callable);
+            Log.d(TAG, "The register result from the server is: "+future.get());
+            return future.get();
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Log.d(TAG, "The register result from the server is: asd");
+            return "asd";
+        }
     }
 
-    static String logIn(String url, String password) throws IOException {
+    static String logIn(String url, String username, String password) throws IOException {
         final String[] responseResult = new String[1];
-        responseResult[0] = "asd";
-        //final String asd = "";
-        OkHttpClient client = new OkHttpClient();
+        final OkHttpClient client = new OkHttpClient();
 
         // new methode to post with okhttp
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
+                .addFormDataPart("username", username)
                 .addFormDataPart("password", password)
                 .build();
 
@@ -126,32 +141,42 @@ public class BackEndNStuff extends AppCompatActivity {
                 .url(url)
                 .post(requestBody)
                 .build();
-        Call call = client.newCall(request);
 
-        call.enqueue(new Callback() {
-            //volatile String asd = "";
+        Callable<String> callable = new Callable<String>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e(TAG,"Could not connect to url");
-            }
+            public String call() {
+                try {
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG,"Connected to URL");
-                responseResult[0] = response.body().string();
-                Log.d(TAG, "The log-in result from the server is: "+response.body().string());
-                //asd = response.body().string();
+                    Response response = client.newCall(request).execute();
+                    return response.body().string();
+
+                }catch (IOException e)
+                {
+                    Log.e(TAG,"Login failed");
+                    return "asd";
+                }
             }
-        });
-        Log.d(TAG, "The log-in result from the function is: "+responseResult[0]);
-        return responseResult[0];
+        };
+
+        try {
+
+            Future<String> future = executor.submit(callable);
+            Log.d(TAG, "The login result from the server is: "+future.get());
+            return future.get();
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Log.d(TAG, "The login result from the server is: asd");
+            return "asd";
+        }
     }
 
     static String register(String url,String username, String password,String salt) throws IOException {
         final String[] responseResult = new String[1];
         responseResult[0] = "asd";
         //final String asd = "";
-        OkHttpClient client = new OkHttpClient();
+        final OkHttpClient client = new OkHttpClient();
 
         // new methode to post with okhttp
         RequestBody requestBody = new MultipartBody.Builder()
@@ -165,7 +190,36 @@ public class BackEndNStuff extends AppCompatActivity {
                 .url(url)
                 .post(requestBody)
                 .build();
-        Call call = client.newCall(request);
+
+        Callable<String> callable = new Callable<String>() {
+            @Override
+            public String call() {
+                try {
+
+                    Response response = client.newCall(request).execute();
+                    return response.body().string();
+
+                }catch (IOException e)
+                {
+                    Log.e(TAG,"register failed");
+                    return "asd";
+                }
+            }
+        };
+
+        try {
+
+            Future<String> future = executor.submit(callable);
+            Log.d(TAG, "The register result from the server is: "+future.get());
+            return future.get();
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Log.d(TAG, "The register result from the server is: asd");
+            return "asd";
+        }
+        /*Call call = client.newCall(request);
 
         call.enqueue(new Callback() {
             //volatile String asd = "";
@@ -178,13 +232,20 @@ public class BackEndNStuff extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 Log.d(TAG,"Connected to URL");
                 responseResult[0] = response.body().string();
-                Log.d(TAG, "The log-in result from the server is: "+response.body().string());
+                Log.d(TAG, "The register result from the server is: "+response.body().string());
                 //asd = response.body().string();
             }
         });
-        Log.d(TAG, "The log-in result from the function is: "+responseResult[0]);
-        return responseResult[0];
+        while(!call.isExecuted())
+        {}
+        Log.d(TAG, "The register result from the function is: "+responseResult[0]);
+        return responseResult[0];*/
+
+
+
     }
+
+
 
 
     /*@Override
