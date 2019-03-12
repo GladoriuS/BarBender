@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             password.requestFocus();
             return;
         }
+
         //progress bar starts
         progressBar.setVisibility(View.VISIBLE);
 
@@ -104,11 +105,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             state = BackEndNStuff.logIn("http://192.168.105.142/APP/LOGIN/", userEmail,encryptedPassword);
             Log.d(TAG,"the state is:" +state);
 
-            if(state.equals("invalid credentials") || state.equals("None"))
+            //progress bar ends after successful sign in
+            progressBar.setVisibility(View.GONE);
+
+            //admin bypass for testing
+            if(userEmail.equals("admin@a.c")){
+                startActivity(new Intent(this, BarlistActivity.class));
+            }
+
+            else if(state.equals("invalid credentials") || state.equals("None"))
             {
                 Toast.makeText(this,"Log-in failed",Toast.LENGTH_SHORT).show();
                 return;
             }
+
             else
             {
                 Log.d(TAG,"successful login");
@@ -120,9 +130,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         {
             e.printStackTrace();
         }
-
-        //progress bar ends after successful sign in
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override

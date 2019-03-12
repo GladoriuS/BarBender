@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class BrowseActivity extends AppCompatActivity implements View.OnClickLis
                 sum = Integer.parseInt(order.get(0))+7;
                 order.set(0,String.valueOf(sum));
                 textView.setText("£"+order.get(0));
+                Toast.makeText(getApplicationContext(), "Drink added!", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.gintonic:
@@ -44,6 +46,7 @@ public class BrowseActivity extends AppCompatActivity implements View.OnClickLis
                 sum2 = Integer.parseInt(order.get(0))+5;
                 order.set(0,String.valueOf(sum2));
                 textView.setText("£"+order.get(0));
+                Toast.makeText(getApplicationContext(), "Drink added!", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.textView3:
