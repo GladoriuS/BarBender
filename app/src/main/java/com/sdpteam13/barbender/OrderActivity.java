@@ -11,10 +11,13 @@ import java.util.ArrayList;
 
 public class OrderActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private String token ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
+        token = getIntent().getStringExtra("token");
         TextView textView = (TextView) findViewById(R.id.textView6);
         TextView textView2 = (TextView) findViewById(R.id.textView7);
 
@@ -39,9 +42,12 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         // clickable areas of UI layout
         TextView textView2 = (TextView) findViewById(R.id.textView7);
         ArrayList<String> order = getIntent().getStringArrayListExtra("order");
+        Intent intent;
         switch (v.getId()){
             case R.id.cancel:
-                startActivity(new Intent(this, SelectorActivity.class));
+                intent = new Intent(this, SelectorActivity.class);
+                intent.putExtra("token",token);
+                startActivity(intent);
                 break;
 
             case R.id.confirm:
@@ -51,8 +57,9 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                     break;
                 }
                 else {
-                    Intent intent = new Intent(this, SeatActivity.class);
+                    intent = new Intent(this, SeatActivity.class);
                     intent.putStringArrayListExtra("order", order);
+                    intent.putExtra("token",token);
                     startActivity(intent);
                     break;
                 }

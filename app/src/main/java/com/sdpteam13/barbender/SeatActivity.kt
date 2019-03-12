@@ -13,12 +13,15 @@ class SeatActivity : AppCompatActivity() {
 
     private lateinit var mResultTextView: TextView
     private lateinit var order : ArrayList<String>
+    private lateinit var token : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seat)
 
         mResultTextView = findViewById(R.id.result_textview)
+
+        token = intent.getStringExtra("token")
 
         //get the order array from previous activity
         order = intent.getStringArrayListExtra("order")
@@ -38,7 +41,15 @@ class SeatActivity : AppCompatActivity() {
                     if (barcode.displayValue.equals("1") or barcode.displayValue.equals("2") or barcode.displayValue.equals("3")) {
                         for(i in order.indices)
                         {
-                            BackEndNStuff.post("http://192.168.105.142/APP/",barcode.displayValue,order[i])
+                            when
+                            {
+                                order[i].equals("Martini") -> BackEndNStuff.post("http://192.168.105.142/APP/", barcode.displayValue, order[i], "None",token)
+                                order[i].contains("&") -> BackEndNStuff.post("http://192.168.105.142/APP/", barcode.displayValue, order[i].split("&")[0], order[i].split("&")[1],token)
+                                order[i].contains("*") -> BackEndNStuff.post("http://192.168.105.142/APP/", barcode.displayValue, order[i], "None",token)
+                                order[i].contains(".") -> BackEndNStuff.post("http://192.168.105.142/APP/", barcode.displayValue, "None", order[i],token)
+
+
+                            }
                         }
                         Toast.makeText(this, "Seat Confirmed!", Toast.LENGTH_SHORT).show()
                         mResultTextView.text = "Seat number: " + barcode.displayValue + "\n\n I won't be long now...please feel free to order again at any time!"

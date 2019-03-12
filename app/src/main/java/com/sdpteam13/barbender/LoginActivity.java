@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             state = BackEndNStuff.logIn("http://192.168.105.142/APP/LOGIN/", userEmail,encryptedPassword);
             Log.d(TAG,"the state is:" +state);
 
-            if(state.equals("invalid credentials"))
+            if(state.equals("invalid credentials") || state.equals("None"))
             {
                 Toast.makeText(this,"Log-in failed",Toast.LENGTH_SHORT).show();
                 return;
@@ -112,7 +112,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             else
             {
                 Log.d(TAG,"successful login");
-                startActivity(new Intent(this, BarlistActivity.class));
+                Intent intent = new Intent(this, BarlistActivity.class);
+                intent.putExtra("token",state);
+                startActivity(intent);
             }
         }catch(IOException e)
         {

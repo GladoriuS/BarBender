@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class CustomiseActivity extends AppCompatActivity {
     public static final String TAG = CustomiseActivity.class.getSimpleName();
 
+    private String token;
 
     //ArrayList<Order> orders = new ArrayList<>();
     //Order order = new Order();
@@ -27,6 +28,7 @@ public class CustomiseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customise);
+        token = getIntent().getStringExtra("token");
         drinkName =  findViewById(R.id.editText);
         order.add("0");
         order.add("");
@@ -38,7 +40,9 @@ public class CustomiseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed()
     {
-        startActivity(new Intent(this, SelectorActivity.class));
+        Intent intent = new Intent(this, SelectorActivity.class);
+        intent.putExtra("token",token);
+        startActivity(intent);
     }
 
     public void onCheckBoxClick(View view)
@@ -151,7 +155,7 @@ public class CustomiseActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) {
-        if (!order.get(1).isEmpty() && !order.get(2).isEmpty() && !drinkName.getText().toString().isEmpty()) {
+        if (!order.get(1).isEmpty() && !order.get(2).isEmpty() ) {
             Log.d(TAG, "Intent should start");
             System.out.println(order);
             order.set(1, drinkName.getText().toString() +" (" + (order.get(1) + "&" + order.get(2)) + ")");
@@ -159,10 +163,11 @@ public class CustomiseActivity extends AppCompatActivity {
             order.set(0,"5");
             Intent intent = new Intent(this, OrderActivity.class);
             intent.putStringArrayListExtra("order", order);
+            intent.putExtra("token",token);
             startActivity(intent);
         }
         else {
-            /*Log.d(TAG, "Intent should start");
+            Log.d(TAG, "Intent should start");
             Log.d(TAG, "Sie of list: "+ order.size());
             System.out.println(order);
             if(order.get(1).isEmpty() && order.get(2).isEmpty())
@@ -172,16 +177,24 @@ public class CustomiseActivity extends AppCompatActivity {
             else
             {
                 if(order.get(2).isEmpty())
+                {
                     order.remove(2);
+                    order.set(1,order.get(1) + "*");
+                    Log.d(TAG, "Only spirit is:" + order.get(1));
+                }
                 if(order.get(1).isEmpty())
+                {
                     order.remove(1);
+                    order.set(1,order.get(1) + ".");
+                    Log.d(TAG, "Only mixer is:" + order.get(1));
+                }
+                order.set(1, drinkName.getText().toString() +" (" + order.get(1)+ ")");
                 Intent intent = new Intent(this, OrderActivity.class);
                 intent.putStringArrayListExtra("order", order);
-                intent.putExtra("activity","customize");
+                intent.putExtra("token",token);
                 startActivity(intent);
 
-            }*/
-            Toast.makeText(this,"You should complete your drink!",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

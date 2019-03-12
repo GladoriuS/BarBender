@@ -9,6 +9,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -127,7 +128,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             state = BackEndNStuff.register("http://192.168.105.142/APP/REGISTER/",username,encryptedPassword,Base64.encodeToString(salt,0));
             Log.d(TAG,"The current state is: " + state);
 
-            startActivity(new Intent(this,LoginActivity.class));
+            if(state.equals("None"))
+            {
+                Log.e(TAG,"Register attempt failed.");
+                Toast.makeText(this,"Register failed",Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                startActivity(new Intent(this, LoginActivity.class));
+            }
 
 
         }catch (NoSuchAlgorithmException e)

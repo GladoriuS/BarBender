@@ -12,11 +12,13 @@ import java.util.List;
 
 public class BrowseActivity extends AppCompatActivity implements View.OnClickListener {
     ArrayList<String> order = new ArrayList<>();
+    private String token ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
+        token = getIntent().getStringExtra("token");
         findViewById(R.id.martini).setOnClickListener(this);
         findViewById(R.id.gintonic).setOnClickListener(this);
         findViewById(R.id.textView3).setOnClickListener(this);
@@ -48,6 +50,7 @@ public class BrowseActivity extends AppCompatActivity implements View.OnClickLis
                 System.out.println(order);
                 Intent intent = new Intent(this, OrderActivity.class);
                 intent.putStringArrayListExtra("order", order);
+                intent.putExtra("token",token);
                 startActivity(intent);
         }
     }
@@ -55,6 +58,8 @@ public class BrowseActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed()
     {
-        startActivity(new Intent(this, SelectorActivity.class));
+        Intent intent = new Intent(this, SelectorActivity.class);
+        intent.putExtra("token",token);
+        startActivity(intent);
     }
 }

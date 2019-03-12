@@ -43,7 +43,7 @@ public class BackEndNStuff extends AppCompatActivity {
 
     public static ExecutorService executor = Executors.newSingleThreadExecutor();
 
-   static String post(String url, String seat,String drink) throws IOException {
+   static String post(String url, String seat,String spirit,String mixer,String token) throws IOException {
         final String[] responseResult = {""};
         OkHttpClient client = new OkHttpClient();
 
@@ -51,7 +51,9 @@ public class BackEndNStuff extends AppCompatActivity {
         RequestBody requestBody = new MultipartBody.Builder()
                .setType(MultipartBody.FORM)
                .addFormDataPart("seat", seat)
-                .addFormDataPart("drink", drink)
+                .addFormDataPart("spirit", spirit)
+                .addFormDataPart("mixer",mixer)
+                .addFormDataPart("token",token)
                .build();
 
         // Internet said it is outdated
@@ -81,8 +83,6 @@ public class BackEndNStuff extends AppCompatActivity {
     }
 
     static String getSalt(String url, String username) throws IOException {
-        final String[] responseResult = new String[1];
-        responseResult[0] = "asd";
         //final String asd = "";
         final OkHttpClient client = new OkHttpClient();
 
@@ -106,8 +106,9 @@ public class BackEndNStuff extends AppCompatActivity {
 
                 }catch (IOException e)
                 {
-                    Log.e(TAG,"register failed");
-                    return "asd";
+                    Log.e(TAG,"Failed to get the salt");
+                    e.printStackTrace();
+                    return "None";
                 }
             }
         };
@@ -115,19 +116,18 @@ public class BackEndNStuff extends AppCompatActivity {
         try {
 
             Future<String> future = executor.submit(callable);
-            Log.d(TAG, "The register result from the server is: "+future.get());
+            Log.d(TAG, "The salt from the server is: "+future.get());
             return future.get();
 
         }catch (Exception e)
         {
             e.printStackTrace();
-            Log.d(TAG, "The register result from the server is: asd");
-            return "asd";
+            Log.e(TAG, "Server did not respond");
+            return "None";
         }
     }
 
     static String logIn(String url, String username, String password) throws IOException {
-        final String[] responseResult = new String[1];
         final OkHttpClient client = new OkHttpClient();
 
         // new methode to post with okhttp
@@ -153,7 +153,8 @@ public class BackEndNStuff extends AppCompatActivity {
                 }catch (IOException e)
                 {
                     Log.e(TAG,"Login failed");
-                    return "asd";
+                    e.printStackTrace();
+                    return "None";
                 }
             }
         };
@@ -167,14 +168,13 @@ public class BackEndNStuff extends AppCompatActivity {
         }catch (Exception e)
         {
             e.printStackTrace();
-            Log.d(TAG, "The login result from the server is: asd");
-            return "asd";
+            Log.d(TAG, "Server did not respond");
+            return "None";
         }
     }
 
     static String register(String url,String username, String password,String salt) throws IOException {
         final String[] responseResult = new String[1];
-        responseResult[0] = "asd";
         //final String asd = "";
         final OkHttpClient client = new OkHttpClient();
 
@@ -202,7 +202,8 @@ public class BackEndNStuff extends AppCompatActivity {
                 }catch (IOException e)
                 {
                     Log.e(TAG,"register failed");
-                    return "asd";
+                    e.printStackTrace();
+                    return "None";
                 }
             }
         };
@@ -216,8 +217,8 @@ public class BackEndNStuff extends AppCompatActivity {
         }catch (Exception e)
         {
             e.printStackTrace();
-            Log.d(TAG, "The register result from the server is: asd");
-            return "asd";
+            Log.d(TAG, "Server did not respond");
+            return "None";
         }
         /*Call call = client.newCall(request);
 

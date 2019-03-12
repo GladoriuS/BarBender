@@ -8,10 +8,13 @@ import android.view.View;
 
 public class SelectorActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private String token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selector);
+        token = getIntent().getStringExtra("token");
         findViewById(R.id.button7).setOnClickListener(this);
         findViewById(R.id.button8).setOnClickListener(this);
     }
@@ -19,14 +22,27 @@ public class SelectorActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         // clickable areas of UI layout
+        Intent intent;
         switch (v.getId()){
             case R.id.button8:
-                startActivity(new Intent(this, BrowseActivity.class));
+                intent = new Intent(this, BrowseActivity.class);
+                intent.putExtra("token",token);
+                startActivity(intent);
                 break;
 
             case R.id.button7:
-                startActivity(new Intent(this, CustomiseActivity.class));
+                intent = new Intent(this, CustomiseActivity.class);
+                intent.putExtra("token",token);
+                startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this, BarlistActivity.class);
+        intent.putExtra("token",token);
+        startActivity(intent);
     }
 }
