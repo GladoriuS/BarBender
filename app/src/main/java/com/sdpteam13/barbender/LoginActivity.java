@@ -62,6 +62,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void signInUser(){
         String userEmail = email.getText().toString().trim();
         String userPassword = password.getText().toString().trim();
+
+        //admin bypass for testing
+        if(userEmail.equals("admin@a.c")){
+            startActivity(new Intent(this, BarlistActivity.class));
+            return;
+        }
+
         // Cases of incorrect input and helpful messages
         if (userEmail.isEmpty()) {
             email.setError("Please enter your email");
@@ -108,12 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //progress bar ends after successful sign in
             progressBar.setVisibility(View.GONE);
 
-            //admin bypass for testing
-            if(userEmail.equals("admin@a.c")){
-                startActivity(new Intent(this, BarlistActivity.class));
-            }
-
-            else if(state.equals("invalid credentials") || state.equals("None"))
+            if(state.equals("invalid credentials") || state.equals("None"))
             {
                 Toast.makeText(this,"Log-in failed",Toast.LENGTH_SHORT).show();
                 return;
