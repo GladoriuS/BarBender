@@ -66,80 +66,81 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String userEmail = email.getText().toString().trim();
         String userPassword = password.getText().toString().trim();
 
-        //admin bypass for testing
-        if(userEmail.equals("admin@a.c")){
-            startActivity(new Intent(this, BarlistActivity.class));
-            return;
-        }
-
-        // Cases of incorrect input and helpful messages
-        if (userEmail.isEmpty()) {
-            email.setError("Please enter your email");
-            email.requestFocus();
-            return;
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
-            email.setError("Please enter a valid email");
-            email.requestFocus();
-            return;
-        }
-
-        if (userPassword.isEmpty()) {
-            password.setError("Please enter password");
-            password.requestFocus();
-            return;
-        }
-        //password restrictions for a minimumly secure password
-        if (userPassword.length() < 10) {
-            password.setError("Minimum length of password is 10 characters");
-            password.requestFocus();
-            return;
-        }
-
-        //progress bar starts
-        progressBar.setVisibility(View.VISIBLE);
-
-        //DANI - sign user in here if credentials work and send them to BarlistActivity
-        byte[] salt;
-        String encryptedPassword = "";
-        String state = "";
-
         try {
-            salt = Base64.decode(BackEndNStuff.getSalt("http://192.168.105.142/APP/LOGIN/",userEmail),0);
-            Log.d(TAG,"The salt is: " + salt);
-
-            encryptedPassword = getSHA(userPassword,salt);
-            Log.d(TAG,"the hashed password is:" +encryptedPassword);
-
-            state = BackEndNStuff.logIn("http://192.168.105.142/APP/LOGIN/", userEmail,encryptedPassword);
-            Log.d(TAG,"the state is:" +state);
-
-            //progress bar ends after successful sign in
-            progressBar.setVisibility(View.GONE);
-
-            if(state.equals("invalid credentials") || state.equals("None"))
-            {
-                Toast.makeText(this,"Log-in failed",Toast.LENGTH_SHORT).show();
+            //admin bypass for testing
+            if (userEmail.equals("admin@a.c")) {
+                startActivity(new Intent(this, BarlistActivity.class));
                 return;
             }
 
-            else
-            {
-                Log.d(TAG,"successful login");
-                //saving current token in shared preferences
-                SharedPreferences settings = getSharedPreferences(preferenceFile, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("token", state);
-                editor.apply();
-
-                Intent intent = new Intent(this, BarlistActivity.class);
-                intent.putExtra("token",state);
-                startActivity(intent);
+            // Cases of incorrect input and helpful messages
+            if (userEmail.isEmpty()) {
+                email.setError("Please enter your email");
+                email.requestFocus();
+                return;
             }
-        }catch(IOException e)
+
+            if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+                email.setError("Please enter a valid email");
+                email.requestFocus();
+                return;
+            }
+
+            if (userPassword.isEmpty()) {
+                password.setError("Please enter password");
+                password.requestFocus();
+                return;
+            }
+            //password restrictions for a minimumly secure password
+            if (userPassword.length() < 10) {
+                password.setError("Minimum length of password is 10 characters");
+                password.requestFocus();
+                return;
+            }
+
+            //progress bar starts
+            progressBar.setVisibility(View.VISIBLE);
+
+            //DANI - sign user in here if credentials work and send them to BarlistActivity
+            byte[] salt;
+            String encryptedPassword = "";
+            String state = "";
+
+            try {
+                salt = Base64.decode(BackEndNStuff.getSalt("http://192.168.105.142/APP/LOGIN/", userEmail), 0);
+                Log.d(TAG, "The salt is: " + salt);
+
+                encryptedPassword = getSHA(userPassword, salt);
+                Log.d(TAG, "the hashed password is:" + encryptedPassword);
+
+                state = BackEndNStuff.logIn("http://192.168.105.142/APP/LOGIN/", userEmail, encryptedPassword);
+                Log.d(TAG, "the state is:" + state);
+
+                //progress bar ends after successful sign in
+                progressBar.setVisibility(View.GONE);
+
+                if (state.equals("invalid credentials") || state.equals("None")|| state.contains("500 Internal Server Error")) {
+                    Toast.makeText(this, "Log-in failed", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    Log.d(TAG, "successful login");
+                    //saving current token in shared preferences
+                    SharedPreferences settings = getSharedPreferences(preferenceFile, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("token", state);
+                    editor.apply();
+
+                    Log.d(TAG,"the token is: "+ settings.getString("token","Nothing"));
+
+                    Intent intent = new Intent(this, BarlistActivity.class);
+                    startActivity(intent);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }catch (Exception e)
         {
-            e.printStackTrace();
+            Toast.makeText(this,"Loggin failed!",Toast.LENGTH_SHORT).show();
         }
     }
 

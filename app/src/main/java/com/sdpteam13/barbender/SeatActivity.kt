@@ -13,6 +13,8 @@ import com.sdpteam13.barbender.barcode.BarcodeCaptureActivity
 
 class SeatActivity : AppCompatActivity() {
 
+    val TAG = BackEndNStuff::class.java.simpleName
+
     private lateinit var mResultTextView: TextView
     private lateinit var order : ArrayList<String>
     private lateinit var token : String
@@ -27,6 +29,7 @@ class SeatActivity : AppCompatActivity() {
 
         val settings = getSharedPreferences(preferencesFile, Context.MODE_PRIVATE)
         token = settings.getString("token","")
+        Log.d(TAG,"The current token is: " + token)
         //token = intent.getStringExtra("token")
 
         //get the order array from previous activity
