@@ -8,13 +8,11 @@ import android.view.View;
 
 public class SelectorActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selector);
-        token = getIntent().getStringExtra("token");
         findViewById(R.id.button7).setOnClickListener(this);
         findViewById(R.id.button8).setOnClickListener(this);
     }
@@ -26,13 +24,11 @@ public class SelectorActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.button8:
                 intent = new Intent(this, BrowseActivity.class);
-                intent.putExtra("token",token);
                 startActivity(intent);
                 break;
 
             case R.id.button7:
                 intent = new Intent(this, CustomiseActivity.class);
-                intent.putExtra("token",token);
                 startActivity(intent);
                 break;
         }
@@ -42,7 +38,6 @@ public class SelectorActivity extends AppCompatActivity implements View.OnClickL
     public void onBackPressed()
     {
         Intent intent = new Intent(this, BarlistActivity.class);
-        intent.putExtra("token",token);
         startActivity(intent);
     }
 }

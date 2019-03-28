@@ -1,6 +1,8 @@
 package com.sdpteam13.barbender;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import java.security.SecureRandom;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static final String TAG = LoginActivity.class.getSimpleName();
+    private final String preferenceFile = "MyPrefsFile"; // for storing preferences
     EditText email, password;
     ProgressBar progressBar;
 
@@ -124,6 +127,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             else
             {
                 Log.d(TAG,"successful login");
+                //saving current token in shared preferences
+                SharedPreferences settings = getSharedPreferences(preferenceFile, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("token", state);
+                editor.apply();
+
                 Intent intent = new Intent(this, BarlistActivity.class);
                 intent.putExtra("token",state);
                 startActivity(intent);

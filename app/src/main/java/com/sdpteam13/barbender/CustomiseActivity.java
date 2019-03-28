@@ -16,8 +16,6 @@ import java.util.ArrayList;
 public class CustomiseActivity extends AppCompatActivity {
     public static final String TAG = CustomiseActivity.class.getSimpleName();
 
-    private String token;
-
     //ArrayList<Order> orders = new ArrayList<>();
     //Order order = new Order();
 
@@ -28,7 +26,6 @@ public class CustomiseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customise);
-        token = getIntent().getStringExtra("token");
         drinkName =  findViewById(R.id.editText);
         order.add("0");
         order.add("");
@@ -41,7 +38,6 @@ public class CustomiseActivity extends AppCompatActivity {
     public void onBackPressed()
     {
         Intent intent = new Intent(this, SelectorActivity.class);
-        intent.putExtra("token",token);
         startActivity(intent);
     }
 
@@ -163,7 +159,6 @@ public class CustomiseActivity extends AppCompatActivity {
             order.set(0,"5");
             Intent intent = new Intent(this, OrderActivity.class);
             intent.putStringArrayListExtra("order", order);
-            intent.putExtra("token",token);
             startActivity(intent);
         }
         else {
@@ -191,7 +186,6 @@ public class CustomiseActivity extends AppCompatActivity {
                 order.set(1, drinkName.getText().toString() +" (" + order.get(1)+ ")");
                 Intent intent = new Intent(this, OrderActivity.class);
                 intent.putStringArrayListExtra("order", order);
-                intent.putExtra("token",token);
                 startActivity(intent);
 
             }

@@ -1,6 +1,8 @@
 package com.sdpteam13.barbender
 
+import android.content.Context
 import android.content.Intent
+import android.nfc.Tag
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -15,13 +17,17 @@ class SeatActivity : AppCompatActivity() {
     private lateinit var order : ArrayList<String>
     private lateinit var token : String
 
+    private val preferencesFile ="MyPrefsFile"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seat)
 
         mResultTextView = findViewById(R.id.result_textview)
 
-        token = intent.getStringExtra("token")
+        val settings = getSharedPreferences(preferencesFile, Context.MODE_PRIVATE)
+        token = settings.getString("token","")
+        //token = intent.getStringExtra("token")
 
         //get the order array from previous activity
         order = intent.getStringArrayListExtra("order")

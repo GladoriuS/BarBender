@@ -16,14 +16,12 @@ import android.app.AlertDialog;
 
 public class BarlistActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barlist);
 
-        token = getIntent().getStringExtra("token");
         findViewById(R.id.appleton).setOnClickListener(this);
         findViewById(R.id.forum).setOnClickListener(this);
     }
@@ -41,7 +39,6 @@ public class BarlistActivity extends AppCompatActivity implements View.OnClickLi
                         String confirmCode = "130319";
                         if (task.equals(confirmCode)){
                             Intent intent = new Intent(getApplicationContext(), SelectorActivity.class);
-                            intent.putExtra("token",token);
                             startActivity(intent);
                             return;
                         }
@@ -60,7 +57,6 @@ public class BarlistActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         // clickable areas of UI layout
         Intent intent = new Intent(this, SelectorActivity.class);
-        intent.putExtra("token",token);
         switch (v.getId()){
             case R.id.appleton:
                 //startActivity(intent);
