@@ -1,6 +1,7 @@
 package com.sdpteam13.barbender;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,28 +10,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.app.AlertDialog.Builder;
-import java.util.ArrayList;
-import android.app.AlertDialog;
 
-
-public class BarlistActivity extends AppCompatActivity implements View.OnClickListener{
-
+public class PaymentActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_barlist);
+        setContentView(R.layout.activity_payment);
 
-        findViewById(R.id.appleton).setOnClickListener(this);
-        findViewById(R.id.forum).setOnClickListener(this);
+        findViewById(R.id.newCard).setOnClickListener(this);
+        findViewById(R.id.savedCard).setOnClickListener(this);
+        findViewById(R.id.cash).setOnClickListener(this);
     }
 
     private void showAddItemDialog(Context c) {
         final EditText taskEditText = new EditText(c);
         AlertDialog dialog = new AlertDialog.Builder(c)
-                .setTitle("Please enter your token")
-                .setMessage("Tokens are valid for 12 hours from when your ID was checked")
+                .setTitle("Please enter your cards CVV for verification")
+                .setMessage("Please enter the 3 digit CVV number found on the back of your card for verification")
                 .setView(taskEditText)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
@@ -38,12 +35,12 @@ public class BarlistActivity extends AppCompatActivity implements View.OnClickLi
                         String task = String.valueOf(taskEditText.getText().toString().trim());
                         String confirmCode = "123";
                         if (task.equals(confirmCode)){
-                            Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), SelectorActivity.class);
                             startActivity(intent);
                             return;
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "Invalid Token!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Incorrect CVV!", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
@@ -58,15 +55,21 @@ public class BarlistActivity extends AppCompatActivity implements View.OnClickLi
         // clickable areas of UI layout
         Intent intent = new Intent(this, SelectorActivity.class);
         switch (v.getId()){
-            case R.id.appleton:
+            case R.id.newCard:
                 //startActivity(intent);
-                showAddItemDialog(BarlistActivity.this);
+                Toast.makeText(getApplicationContext(), "Payment Getaway Not Yet Implemented", Toast.LENGTH_SHORT).show();;
                 break;
 
-            case R.id.forum:
+            case R.id.savedCard:
                 //startActivity(intent);
-                showAddItemDialog(BarlistActivity.this);
+                showAddItemDialog(PaymentActivity.this);
+                break;
+
+            case R.id.cash:
+                //startActivity(intent);
+                startActivity(new Intent(getApplicationContext(), SelectorActivity.class));
                 break;
         }
     }
+
 }

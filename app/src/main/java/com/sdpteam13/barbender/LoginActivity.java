@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         try {
             //admin bypass for testing
-            if (userEmail.equals("admin@a.c")) {
+            if (userEmail.equals("admin@bender.com")) {
                 startActivity(new Intent(this, BarlistActivity.class));
                 return;
             }
