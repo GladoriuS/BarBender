@@ -136,6 +136,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             else
             {
                 startActivity(new Intent(this, LoginActivity.class));
+                Toast.makeText(this,"Account created!",Toast.LENGTH_SHORT).show();
             }
 
 
@@ -145,6 +146,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }catch (IOException e)
         {
             Log.e(TAG,"Registering failed");
+        }catch (Exception e)
+        {
+            Toast.makeText(this,"Something went wrong, good luck.",Toast.LENGTH_SHORT).show();
         }
 
 

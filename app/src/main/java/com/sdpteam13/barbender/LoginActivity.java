@@ -128,6 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     SharedPreferences settings = getSharedPreferences(preferenceFile, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("token", state);
+                    editor.putString("email",email.getText().toString());
                     editor.apply();
 
                     Log.d(TAG,"the token is: "+ settings.getString("token","Nothing"));

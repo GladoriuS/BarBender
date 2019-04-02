@@ -18,6 +18,7 @@ class SeatActivity : AppCompatActivity() {
     private lateinit var mResultTextView: TextView
     private lateinit var order : ArrayList<String>
     private lateinit var token : String
+    private lateinit var email : String
 
     private val preferencesFile ="MyPrefsFile"
 
@@ -29,7 +30,9 @@ class SeatActivity : AppCompatActivity() {
 
         val settings = getSharedPreferences(preferencesFile, Context.MODE_PRIVATE)
         token = settings.getString("token","")
+        email = settings.getString("email","")
         Log.d(TAG,"The current token is: " + token)
+        Log.d(TAG,"The current email is: " + email)
         //token = intent.getStringExtra("token")
 
         //get the order array from previous activity
@@ -52,10 +55,10 @@ class SeatActivity : AppCompatActivity() {
                         {
                             when
                             {
-                                order[i].equals("Martini") -> BackEndNStuff.post("http://192.168.105.142/APP/", barcode.displayValue, order[i], "None",token)
-                                order[i].contains("&") -> BackEndNStuff.post("http://192.168.105.142/APP/", barcode.displayValue, order[i].split("&")[0], order[i].split("&")[1],token)
-                                order[i].contains("*") -> BackEndNStuff.post("http://192.168.105.142/APP/", barcode.displayValue, order[i], "None",token)
-                                order[i].contains(".") -> BackEndNStuff.post("http://192.168.105.142/APP/", barcode.displayValue, "None", order[i],token)
+                                order[i].equals("Martini") -> BackEndNStuff.post("http://192.168.105.142/APP/",email, barcode.displayValue, order[i], "None",token)
+                                order[i].contains("&") -> BackEndNStuff.post("http://192.168.105.142/APP/",email, barcode.displayValue, order[i].split("&")[0], order[i].split("&")[1],token)
+                                order[i].contains("*") -> BackEndNStuff.post("http://192.168.105.142/APP/",email, barcode.displayValue, order[i], "None",token)
+                                order[i].contains(".") -> BackEndNStuff.post("http://192.168.105.142/APP/",email, barcode.displayValue, "None", order[i],token)
 
 
                             }

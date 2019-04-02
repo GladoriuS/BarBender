@@ -32,7 +32,7 @@ public class BrowseActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.martini:
                 order.add("Martini");
                 int sum = 0;
-                sum = Integer.parseInt(order.get(0))+7;
+                sum = Integer.parseInt(order.get(0))+5;
                 order.set(0,String.valueOf(sum));
                 textView.setText("£"+order.get(0));
                 Toast.makeText(getApplicationContext(), "Drink added!", Toast.LENGTH_SHORT).show();

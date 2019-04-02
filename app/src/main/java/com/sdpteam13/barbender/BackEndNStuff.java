@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -38,18 +39,19 @@ public class BackEndNStuff extends AppCompatActivity {
 
     public static ExecutorService executor = Executors.newSingleThreadExecutor();
 
-   static String post(String url, String seat,String spirit,String mixer,String token) throws IOException {
+   static String post(String url,String username, String seat,String spirit,String mixer,String token) throws IOException {
         final String[] responseResult = {""};
         OkHttpClient client = new OkHttpClient();
 
         // new methode to post with okhttp
         RequestBody requestBody = new MultipartBody.Builder()
                .setType(MultipartBody.FORM)
-               .addFormDataPart("seat", seat)
+                .addFormDataPart("username",username)
+                .addFormDataPart("seat", seat)
                 .addFormDataPart("spirit", spirit)
                 .addFormDataPart("mixer",mixer)
                 .addFormDataPart("token",token)
-               .build();
+                .build();
 
         // Internet said it is outdated
         //RequestBody body = new FormBody.Builder()
@@ -213,6 +215,97 @@ public class BackEndNStuff extends AppCompatActivity {
         {
             e.printStackTrace();
             Log.d(TAG, "Server did not respond");
+            return "None";
+        }
+    }
+
+    static String getBarToken(String url,String username, String token) throws IOException {
+
+        final OkHttpClient client = new OkHttpClient();
+
+        // new methode to post with okhttp
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("username",username)
+                .addFormDataPart("token", token)
+                .build();
+
+        final Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        Callable<String> callable = new Callable<String>() {
+            @Override
+            public String call() {
+                try {
+
+                    Response response = client.newCall(request).execute();
+                    return response.body().string();
+
+                }catch (IOException e)
+                {
+                    Log.e(TAG,"Failed to get anything");
+                    e.printStackTrace();
+                    return "None";
+                }
+            }
+        };
+
+        try {
+
+            Future<String> future = executor.submit(callable);
+            Log.d(TAG, "The received data from the server is: "+future.get(1000, TimeUnit.MILLISECONDS));
+            return future.get();
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Log.e(TAG, "Server did not respond");
+            return "None";
+        }
+    }
+
+    static String verifyUser(String url, String username) throws IOException {
+
+        final OkHttpClient client = new OkHttpClient();
+
+        // new methode to post with okhttp
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("username", username)
+                .build();
+
+        final Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        Callable<String> callable = new Callable<String>() {
+            @Override
+            public String call() {
+                try {
+
+                    Response response = client.newCall(request).execute();
+                    return response.body().string();
+
+                }catch (IOException e)
+                {
+                    Log.e(TAG,"Failed to get anything");
+                    e.printStackTrace();
+                    return "None";
+                }
+            }
+        };
+
+        try {
+
+            Future<String> future = executor.submit(callable);
+            Log.d(TAG, "The received data from the server is: "+future.get(500, TimeUnit.MILLISECONDS));
+            return future.get();
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Log.e(TAG, "Server did not respond");
             return "None";
         }
     }

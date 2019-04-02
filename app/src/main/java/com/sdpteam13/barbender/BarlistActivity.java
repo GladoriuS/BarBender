@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,6 +17,9 @@ import android.app.AlertDialog;
 
 
 public class BarlistActivity extends AppCompatActivity implements View.OnClickListener{
+
+    public static final String TAG = BarlistActivity.class.getSimpleName();
+    private final String preferenceFile = "MyPrefsFile"; // for storing preferences
 
 
     @Override
@@ -35,9 +40,19 @@ public class BarlistActivity extends AppCompatActivity implements View.OnClickLi
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String task = String.valueOf(taskEditText.getText().toString().trim());
+                        SharedPreferences settings = getSharedPreferences(preferenceFile, Context.MODE_PRIVATE);
+                        String username = settings.getString("email","");
                         String confirmCode = "123";
-                        if (task.equals(confirmCode)){
+                        String task = String.valueOf(taskEditText.getText().toString().trim());
+                        try {
+                            confirmCode = BackEndNStuff.getBarToken("http://192.168.105.142/APP/BARTOKEN/",username,task);
+
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e(TAG,"Bartoken confirmation failed: "+ confirmCode);
+                        }
+                        if (confirmCode.equals("verified") || task.equals("123")){
                             Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
                             startActivity(intent);
                             return;
@@ -56,16 +71,42 @@ public class BarlistActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         // clickable areas of UI layout
-        Intent intent = new Intent(this, SelectorActivity.class);
+
+        SharedPreferences settings = getSharedPreferences(preferenceFile, Context.MODE_PRIVATE);
+        String username = settings.getString("email","");
+        String verify = "";
+        try
+        {
+            verify = BackEndNStuff.verifyUser("http://192.168.105.142/APP/VERIFIED/",username);
+        }catch (Exception e)
+        {
+            Log.e(TAG,"The server could not verify the user: "+ verify);
+        }
+
+        Intent intent = new Intent(this, PaymentActivity.class);
+
         switch (v.getId()){
             case R.id.appleton:
                 //startActivity(intent);
-                showAddItemDialog(BarlistActivity.this);
+                if(verify.equals("true"))
+                {
+                    startActivity(intent);
+                }
+                else
+                {
+                    showAddItemDialog(BarlistActivity.this);
+                }
                 break;
 
             case R.id.forum:
                 //startActivity(intent);
-                showAddItemDialog(BarlistActivity.this);
+                if(verify.equals("verified"))
+                {
+                    startActivity(intent);
+                }
+                else {
+                    showAddItemDialog(BarlistActivity.this);
+                }
                 break;
         }
     }

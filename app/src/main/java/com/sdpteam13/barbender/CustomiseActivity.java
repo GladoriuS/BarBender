@@ -16,9 +16,6 @@ import java.util.ArrayList;
 public class CustomiseActivity extends AppCompatActivity {
     public static final String TAG = CustomiseActivity.class.getSimpleName();
 
-    //ArrayList<Order> orders = new ArrayList<>();
-    //Order order = new Order();
-
     ArrayList<String> order = new ArrayList<>();
     EditText drinkName ;
 
@@ -58,8 +55,6 @@ public class CustomiseActivity extends AppCompatActivity {
             case R.id.rum:
 
                 order.set(1,"Rum");
-                //order.setSpirit("rum");
-                //order.addComponent("rum");
 
                 gin.setChecked(false);
                 whisky.setChecked(false);
@@ -70,8 +65,6 @@ public class CustomiseActivity extends AppCompatActivity {
             case R.id.gin:
 
                 order.set(1,"Gin");
-                //order.setSpirit("gin");
-                //order.addComponent("gin");
 
                 whisky.setChecked(false);
                 rum.setChecked(false);
@@ -82,8 +75,6 @@ public class CustomiseActivity extends AppCompatActivity {
             case R.id.whisky:
 
                 order.set(1,"Whisky");
-                //order.setSpirit("whisky");
-                //order.addComponent("whisky");
 
                 rum.setChecked(false);
                 gin.setChecked(false);
@@ -94,8 +85,6 @@ public class CustomiseActivity extends AppCompatActivity {
             case R.id.vodka:
 
                 order.set(1,"Vodka");
-                //order.setSpirit("vodka");
-                //order.addComponent("rum");
 
                 rum.setChecked(false);
                 gin.setChecked(false);
@@ -106,7 +95,6 @@ public class CustomiseActivity extends AppCompatActivity {
             case R.id.lemon:
 
                 order.set(2,"Lemon");
-                //order.setMixer("lemon");
 
                 orange.setChecked(false);
                 tonic.setChecked(false);
@@ -117,7 +105,6 @@ public class CustomiseActivity extends AppCompatActivity {
             case R.id.orange:
 
                 order.set(2,"Orange");
-                //order.setMixer("orange");
 
                 lemon.setChecked(false);
                 coke.setChecked(false);
@@ -128,7 +115,6 @@ public class CustomiseActivity extends AppCompatActivity {
             case R.id.coke:
 
                 order.set(2,"Coke");
-                //order.setMixer("coke");
 
                 lemon.setChecked(false);
                 orange.setChecked(false);
@@ -139,7 +125,6 @@ public class CustomiseActivity extends AppCompatActivity {
             case R.id.tonic:
 
                 order.set(2,"Tonic");
-                //order.setMixer("tonic");
 
                 coke.setChecked(false);
                 lemon.setChecked(false);
@@ -176,12 +161,14 @@ public class CustomiseActivity extends AppCompatActivity {
                     order.remove(2);
                     order.set(1,order.get(1) + "*");
                     Log.d(TAG, "Only spirit is:" + order.get(1));
+                    order.set(0,"5");
                 }
                 if(order.get(1).isEmpty())
                 {
                     order.remove(1);
                     order.set(1,order.get(1) + ".");
                     Log.d(TAG, "Only mixer is:" + order.get(1));
+                    order.set(0,"5");
                 }
                 order.set(1, drinkName.getText().toString() +" (" + order.get(1)+ ")");
                 Intent intent = new Intent(this, OrderActivity.class);
