@@ -20,7 +20,6 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
 
         findViewById(R.id.newCard).setOnClickListener(this);
         findViewById(R.id.savedCard).setOnClickListener(this);
-        findViewById(R.id.cash).setOnClickListener(this);
     }
 
     private void showAddItemDialog(Context c) {
@@ -63,11 +62,6 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.savedCard:
                 //startActivity(intent);
                 showAddItemDialog(PaymentActivity.this);
-                break;
-
-            case R.id.cash:
-                //startActivity(intent);
-                startActivity(new Intent(getApplicationContext(), SelectorActivity.class));
                 break;
         }
     }
